@@ -11,7 +11,7 @@ const AccountPage = () => {
 
   const getAccountInformation = () => {
     const asyncFun = async() => {
-      interface IAPIResponse { balance: number };
+      interface IAPIResponse { balance: number, name : string };
       const { data } = await axios.post<IAPIResponse>(SAPIBase + '/account/getInfo', { credential: SAPIKEY });
       setNBalance(data.balance);
     }
