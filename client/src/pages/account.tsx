@@ -8,11 +8,19 @@ const AccountPage = () => {
   const [ SAPIKEY, setSAPIKEY ] = React.useState<string>("");
   const [ NBalance, setNBalance ] = React.useState<number | "Not Authorized">("Not Authorized");
   const [ NTransaction, setNTransaction ] = React.useState<number | ''>(0);
+  const [ SId, setSId ] = React.useState<string>("");
+  const [ SPwd, setSPwd ] = React.useState<String>("");
+
 
   const getAccountInformation = () => {
     const asyncFun = async() => {
+<<<<<<< HEAD
       interface IAPIResponse { balance: number, name : string };
       const { data } = await axios.post<IAPIResponse>(SAPIBase + '/account/getInfo', { credential: SAPIKEY });
+=======
+      interface IAPIResponse { balance: number };
+      const { data } = await axios.post<IAPIResponse>(SAPIBase + '/account/getInfo', { id: SId, pwd: SPwd });
+>>>>>>> 76ef288e9e6e61c2e93d650f32bee31643bb4e58
       setNBalance(data.balance);
     }
     asyncFun().catch((e) => window.alert(`AN ERROR OCCURED: ${e}`));
@@ -22,7 +30,7 @@ const AccountPage = () => {
     const asyncFun = async() => {
       if (amount === '') return;
       interface IAPIResponse { success: boolean, balance: number, msg: string };
-      const { data } = await axios.post<IAPIResponse>(SAPIBase + '/account/transaction', { credential: SAPIKEY, amount: amount });
+      const { data } = await axios.post<IAPIResponse>(SAPIBase + '/account/transaction', { id: SId, pwd: SPwd, amount: amount });
       setNTransaction(0);
       if (!data.success) {
         window.alert('Transaction Failed:' + data.msg);
@@ -40,8 +48,13 @@ const AccountPage = () => {
       <Header/>
       <h2>Account</h2>
       <div className={"account-token-input"}>
-        Enter API Key: <input type={"text"} value={SAPIKEY} onChange={e => setSAPIKEY(e.target.value)}/>
-        <button onClick={e => getAccountInformation()}>GET</button>
+        <p>
+          Enter UserID: <input type={"text"}  onChange={e => setSId(e.target.value)}/>
+        </p>
+        <p>
+          Enter Password: <input type={"text"} onChange={e => setSPwd(e.target.value)}/>
+          <button onClick={e => getAccountInformation()}>GET</button>
+        </p>
       </div>
       <div className={"account-bank"}>
         <h3>The National Bank of SPARCS API</h3>
